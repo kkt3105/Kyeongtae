@@ -24,9 +24,10 @@ public class RecordActivity extends AppCompatActivity {
 	ListView lv;
 	CalendarView cal;
 	String today_date, date, time, name, num, repetition, weight;
+	int order;
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	protected void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		dbm = new DBManager(this);
 
@@ -63,11 +64,12 @@ public class RecordActivity extends AppCompatActivity {
 		lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 			@Override
 			public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-
-				String time = lv.getAdapter().getItem(position).toString();
+				Exercise selectedItem = (Exercise)lv.getAdapter().getItem(position);
+				String time = selectedItem.time;
+				int order = selectedItem.order;
 				// date 수정 필요. 해당하는 날짜.
 				db = dbm.getWritableDatabase();
-				db.execSQL("DELETE FROM RECORD WHERE (date = " + date + " AND time = " + time + ");");
+				db.execSQL("DELETE FROM RECORD WHERE (date = " + date + " AND time = " + time + " AND exerorder = " + order +");");
 				Toast.makeText(RecordActivity.this, "제거하였습니다.", Toast.LENGTH_SHORT).show();
 				updateList(date);
 				return true;
@@ -78,7 +80,7 @@ public class RecordActivity extends AppCompatActivity {
 
 	}
 	public void updateList(String key){
-		ArrayList<Exercise> list = new ArrayList<Exercise>();
+		ArrayList<Exercise> list = new ArrayList<>();
 
 		db = dbm.getReadableDatabase();
 		Cursor cursor;
@@ -88,18 +90,20 @@ public class RecordActivity extends AppCompatActivity {
 			do {
 				date = cursor.getString(0);
 				time = cursor.getString(1);
-				name = cursor.getString(2);
-				num = cursor.getString(3);
-				repetition = cursor.getString(4);
-				weight = cursor.getString(5);
+				order = cursor.getInt(2);
+				name = cursor.getString(3);
+				num = cursor.getString(4);
+				repetition = cursor.getString(5);
+				weight = cursor.getString(6);
 
-				Exercise exer = new Exercise(date, time, name, num, repetition, weight);
+				Exercise exer = new Exercise(date, time, order, name, num, repetition, weight);
 				list.add(exer);
 
 			} while (cursor.moveToNext());
 		}
 		ExerciseAdapter adapter = new ExerciseAdapter(RecordActivity.this, R.layout.exercise, list);
 		lv.setAdapter(adapter);
+
 		cursor.close();
 		db.close();
 	}
@@ -107,14 +111,15 @@ public class RecordActivity extends AppCompatActivity {
 
 class Exercise{
 	String date, time, name, num, repetition, weight;
-	Exercise(String date, String time, String name, String num, String repetition, String weight){
+	int order;
+	Exercise(String date, String time, int order, String name, String num, String repetition, String weight){
 		this.date = date;
 		this.time = time;
+		this.order = order;
 		this.name = name;
 		this.num = num;
 		this.repetition = repetition;
 		this.weight = weight;
-
 	}
 }
 
@@ -137,7 +142,7 @@ class ExerciseAdapter extends BaseAdapter{
 	}
 	@Override
 	public Object getItem(int position){
-		return exerList.get(position).time;
+		return exerList.get(position);
 	}
 	@Override
 	public long getItemId(int position){

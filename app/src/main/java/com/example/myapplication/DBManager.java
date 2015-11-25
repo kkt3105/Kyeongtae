@@ -11,7 +11,7 @@ public class DBManager extends SQLiteOpenHelper {
 
 	@Override
 	public void onCreate(SQLiteDatabase db){
-		String createSQL = "CREATE TABLE RECORD (date char(8), time char(6), name varchar(30), num varchar(2), repetition varchar(3), weight varchar(3), PRIMARY KEY(date, time));";
+		String createSQL = "CREATE TABLE RECORD (date char(8), time char(6), exerorder int, name varchar(30), num varchar(2), repetition varchar(3), weight varchar(3), PRIMARY KEY(date, time, exerorder));";
 		db.execSQL(createSQL);
 	}
 
