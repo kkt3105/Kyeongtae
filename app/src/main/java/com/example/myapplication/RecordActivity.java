@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,7 +68,7 @@ public class RecordActivity extends AppCompatActivity {
 				Exercise selectedItem = (Exercise)lv.getAdapter().getItem(position);
 				String time = selectedItem.time;
 				int order = selectedItem.order;
-				// date 수정 필요. 해당하는 날짜.
+
 				db = dbm.getWritableDatabase();
 				db.execSQL("DELETE FROM RECORD WHERE (date = " + date + " AND time = " + time + " AND exerorder = " + order +");");
 				Toast.makeText(RecordActivity.this, "제거하였습니다.", Toast.LENGTH_SHORT).show();
@@ -84,7 +85,7 @@ public class RecordActivity extends AppCompatActivity {
 
 		db = dbm.getReadableDatabase();
 		Cursor cursor;
-		cursor = db.rawQuery("SELECT * FROM RECORD WHERE (date = " + key + ");", null);
+		cursor = db.rawQuery("SELECT * FROM RECORD WHERE (date = " + key + ") ORDER BY time;", null);
 
 		if (cursor.moveToFirst()) {
 			do {
@@ -98,6 +99,7 @@ public class RecordActivity extends AppCompatActivity {
 
 				Exercise exer = new Exercise(date, time, order, name, num, repetition, weight);
 				list.add(exer);
+				Log.d("kk", time);
 
 			} while (cursor.moveToNext());
 		}

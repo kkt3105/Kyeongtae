@@ -1,6 +1,7 @@
 package com.example.myapplication;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -79,6 +80,8 @@ public class UserExerciseActivity extends AppCompatActivity {
 						db.execSQL("INSERT INTO RECORD values('" + date + "','" + time + "', " + order + ",'" + name + "','" + num + "','" + repetition + "','" + weight + "');");
 					}
 					Toast.makeText(UserExerciseActivity.this, "추가완료", Toast.LENGTH_SHORT).show();
+					Intent intent = new Intent(getApplicationContext(), PlayExerciseActivity.class);
+					startActivity(intent);
 				}else{
 					Toast.makeText(UserExerciseActivity.this, "빈칸을 모두 입력해주세요.", Toast.LENGTH_SHORT).show();
 				}
