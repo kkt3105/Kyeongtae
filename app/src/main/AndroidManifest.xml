@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.myapplication" >
-
+    <uses-permission android:name="android.permission.INTERNET"/>
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
+        <meta-data android:name="com.facebook.sdk.ApplicationId"
+                   android:value="@string/facebook_app_id"/>
         <activity
             android:name=".MainActivity"
             android:screenOrientation="sensorLandscape" >
@@ -45,6 +47,19 @@
                   android:label="@string/play_exercise_activity"
                   android:screenOrientation="sensorLandscape">
         </activity>
+        <activity android:name=".SocialActivity"
+                  android:label="@string/social_activity"
+                  android:screenOrientation="portrait">
+        </activity>
+        <activity android:name="com.facebook.FacebookActivity"
+                  android:configChanges=
+                      "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+                  android:theme="@android:style/Theme.Translucent.NoTitleBar"
+                  android:label="@string/app_name"/>
+        <provider
+            android:authorities="com.facebook.app.FacebookContentProvider141770219518528"
+            android:name="com.facebook.FacebookContentProvider"
+            android:exported="true"/>
     </application>
 
 </manifest>

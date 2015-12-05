@@ -6,6 +6,7 @@
 			  android:weightSum="1">
 	<!-- 화면 전환(Frame layout)을 사용할 지, 아니면 activity를 사용할 지-->
 	<TextView
+		android:id="@+id/PlayName"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:hint="운동이름"
@@ -48,16 +49,19 @@
 			android:orientation="vertical">
 
 			<TextView
+				android:id="@+id/PlayNum"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:hint="00"
 				android:textSize="30dp"/>
 			<TextView
+				android:id="@+id/PlayRepetition"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:hint="00"
 				android:textSize="30dp"/>
 			<TextView
+				android:id="@+id/PlayWeight"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:hint="00"

@@ -7,7 +7,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -16,6 +15,8 @@ public class MainActivity extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		startActivity(new Intent(this, LoadingActivity.class));
+
+
 	}
 
 	public void onClick_main_1(View view) {
@@ -27,10 +28,8 @@ public class MainActivity extends AppCompatActivity {
 		startActivity(mainBtn2Intent);
 	}
 	public void onClick_main_3(View view) {
-		Toast.makeText(MainActivity.this, "기능 미구현", Toast.LENGTH_SHORT).show();
-		//Calendar now = Calendar.getInstance();
-		//Log.d("kktime", "" + now.get(Calendar.HOUR_OF_DAY) + " " + now.get(Calendar.MINUTE) + " " + now.get(Calendar.SECOND));
-
+		Intent mainBtn3Intent = new Intent(getApplicationContext(), SocialActivity.class);
+		startActivity(mainBtn3Intent);
 	}
 
 	@Override

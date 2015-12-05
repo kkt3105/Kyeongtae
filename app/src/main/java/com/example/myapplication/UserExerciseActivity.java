@@ -51,36 +51,58 @@ public class UserExerciseActivity extends AppCompatActivity {
 
 				String date = year + "" + (month + 1) + "" + day;
 				String time = hour +""+minute+""+second;
-				String name, num, repetition, weight, restTime;
-				int order, isEmpty=0;
+				String name;
 
+				int order, num, repetition, weight, restTime;
+				int isEmpty=0;
+
+				ArrayList<String> nameList = new ArrayList<>();
+				ArrayList<Integer> numList = new ArrayList<>();
+				ArrayList<Integer> repetitionList = new ArrayList<>();
+				ArrayList<Integer> weightList = new ArrayList<>();
+				ArrayList<Integer> restTimeList = new ArrayList<>();
+
+				// 비어있는지 체크
 				for (int i=0; i<vList.size();i++){
-					name = vList.get(i).editText_name.getText().toString();
-					num = vList.get(i).editText_num.getText().toString();
-					repetition = vList.get(i).editText_repetition.getText().toString();
-					weight = vList.get(i).editText_weight.getText().toString();
-					restTime = vList.get(i).editText_time.getText().toString();
-
-					if (name.length() == 0 || num.length() == 0 || repetition.length() == 0 || weight.length() == 0 || restTime.length() == 0) {
+					if (vList.get(i).editText_name.getText().toString().length() == 0 ||
+							vList.get(i).editText_num.getText().toString().length() == 0 ||
+							vList.get(i).editText_repetition.getText().toString().length() == 0 ||
+							vList.get(i).editText_weight.getText().toString().length() == 0 ||
+							vList.get(i).editText_time.getText().toString().length() == 0) {
 						isEmpty++;
 					}
-
 				}
+
 				if(isEmpty ==0){
 					for (int i=0; i<vList.size();i++){
-						name = vList.get(i).editText_name.getText().toString();
-						num = vList.get(i).editText_num.getText().toString();
 						order=i;
-						repetition = vList.get(i).editText_repetition.getText().toString();
-						weight = vList.get(i).editText_weight.getText().toString();
-						restTime = vList.get(i).editText_time.getText().toString();
+						name = vList.get(i).editText_name.getText().toString();
+						num = Integer.parseInt(vList.get(i).editText_num.getText().toString());
+						repetition = Integer.parseInt(vList.get(i).editText_repetition.getText().toString());
+						weight = Integer.parseInt(vList.get(i).editText_weight.getText().toString());
+						restTime = Integer.parseInt(vList.get(i).editText_time.getText().toString());
 
-						Log.d("kk", date+"/"+time+"/"+order+"/"+name+"/"+num+"/"+repetition+"/"+weight+"/"+restTime);
+						Log.d("kk", date + "/" + time + "/" + order + "/" + name + "/" + num + "/" + repetition + "/" + weight + "/" + restTime);
 
-						db.execSQL("INSERT INTO RECORD values('" + date + "','" + time + "', " + order + ",'" + name + "','" + num + "','" + repetition + "','" + weight + "');");
+						nameList.add(name);
+						numList.add(num);
+						repetitionList.add(repetition);
+						weightList.add(weight);
+						restTimeList.add(restTime);
+
+						db.execSQL("INSERT INTO RECORD values('" + date + "','" + time + "', " + order + ",'" + name + "', " + num + ", " + repetition + ", " + weight + ");");
 					}
+
 					Toast.makeText(UserExerciseActivity.this, "추가완료", Toast.LENGTH_SHORT).show();
 					Intent intent = new Intent(getApplicationContext(), PlayExerciseActivity.class);
+
+					intent.putStringArrayListExtra("name", nameList);
+					intent.putIntegerArrayListExtra("num", numList);
+					intent.putIntegerArrayListExtra("repetition", repetitionList);
+					intent.putIntegerArrayListExtra("weight", weightList);
+					intent.putIntegerArrayListExtra("restTime", restTimeList);
+
+
 					startActivity(intent);
 				}else{
 					Toast.makeText(UserExerciseActivity.this, "빈칸을 모두 입력해주세요.", Toast.LENGTH_SHORT).show();

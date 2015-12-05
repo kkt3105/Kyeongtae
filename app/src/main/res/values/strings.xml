@@ -5,4 +5,6 @@
 	<string name="routine_exercise_activity">루틴추가</string>
 	<string name="record_activity">운동기록</string>
 	<string name="play_exercise_activity">운동진행</string>
+	<string name="social_activity">공유</string>
+	<string name="facebook_app_id">141770219518528</string>
 </resources>

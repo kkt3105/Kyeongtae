@@ -24,8 +24,8 @@ public class RecordActivity extends AppCompatActivity {
 	SQLiteDatabase db;
 	ListView lv;
 	CalendarView cal;
-	String today_date, date, time, name, num, repetition, weight;
-	int order;
+	String today_date, date, time, name;
+	int order, num, repetition, weight;
 
 	@Override
 	protected void onCreate(final Bundle savedInstanceState) {
@@ -55,7 +55,6 @@ public class RecordActivity extends AppCompatActivity {
 		cal.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
 			@Override
 			public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
-
 				date = year + "" + (month + 1) + "" + dayOfMonth;
 				updateList(date);
 			}
@@ -93,9 +92,9 @@ public class RecordActivity extends AppCompatActivity {
 				time = cursor.getString(1);
 				order = cursor.getInt(2);
 				name = cursor.getString(3);
-				num = cursor.getString(4);
-				repetition = cursor.getString(5);
-				weight = cursor.getString(6);
+				num = cursor.getInt(4);
+				repetition = cursor.getInt(5);
+				weight = cursor.getInt(6);
 
 				Exercise exer = new Exercise(date, time, order, name, num, repetition, weight);
 				list.add(exer);
@@ -112,9 +111,9 @@ public class RecordActivity extends AppCompatActivity {
 }
 
 class Exercise{
-	String date, time, name, num, repetition, weight;
-	int order;
-	Exercise(String date, String time, int order, String name, String num, String repetition, String weight){
+	String date, time, name;
+	int order, num, repetition, weight;
+	Exercise(String date, String time, int order, String name, int num, int repetition, int weight){
 		this.date = date;
 		this.time = time;
 		this.order = order;
@@ -162,9 +161,9 @@ class ExerciseAdapter extends BaseAdapter{
 		TextView ExerWeight = (TextView)convertView.findViewById(R.id.ExerWeight);
 
 		ExerName.setText(exerList.get(position).name);
-		ExerNum.setText(exerList.get(position).num);
-		ExerRepetition.setText(exerList.get(position).repetition);
-		ExerWeight.setText(exerList.get(position).weight);
+		ExerNum.setText(exerList.get(position).num+"");
+		ExerRepetition.setText(exerList.get(position).repetition+"");
+		ExerWeight.setText(exerList.get(position).weight+"");
 
 		return convertView;
 	}
