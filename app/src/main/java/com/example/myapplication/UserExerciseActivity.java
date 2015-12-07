@@ -63,53 +63,58 @@ public class UserExerciseActivity extends AppCompatActivity {
 				ArrayList<Integer> restTimeList = new ArrayList<>();
 
 				// 비어있는지 체크
-				for (int i=0; i<vList.size();i++){
-					if (vList.get(i).editText_name.getText().toString().length() == 0 ||
-							vList.get(i).editText_num.getText().toString().length() == 0 ||
-							vList.get(i).editText_repetition.getText().toString().length() == 0 ||
-							vList.get(i).editText_weight.getText().toString().length() == 0 ||
-							vList.get(i).editText_time.getText().toString().length() == 0) {
-						isEmpty++;
-					}
-				}
-
-				if(isEmpty ==0){
+				if(vList.size()!=0){
 					for (int i=0; i<vList.size();i++){
-						order=i;
-						name = vList.get(i).editText_name.getText().toString();
-						num = Integer.parseInt(vList.get(i).editText_num.getText().toString());
-						repetition = Integer.parseInt(vList.get(i).editText_repetition.getText().toString());
-						weight = Integer.parseInt(vList.get(i).editText_weight.getText().toString());
-						restTime = Integer.parseInt(vList.get(i).editText_time.getText().toString());
-
-						Log.d("kk", date + "/" + time + "/" + order + "/" + name + "/" + num + "/" + repetition + "/" + weight + "/" + restTime);
-
-						nameList.add(name);
-						numList.add(num);
-						repetitionList.add(repetition);
-						weightList.add(weight);
-						restTimeList.add(restTime);
-
-						db.execSQL("INSERT INTO RECORD values('" + date + "','" + time + "', " + order + ",'" + name + "', " + num + ", " + repetition + ", " + weight + ");");
+						if (vList.get(i).editText_name.getText().toString().length() == 0 ||
+								vList.get(i).editText_num.getText().toString().length() == 0 ||
+								vList.get(i).editText_repetition.getText().toString().length() == 0 ||
+								vList.get(i).editText_weight.getText().toString().length() == 0 ||
+								vList.get(i).editText_time.getText().toString().length() == 0) {
+							isEmpty++;
+						}
 					}
 
-					Toast.makeText(UserExerciseActivity.this, "추가완료", Toast.LENGTH_SHORT).show();
-					Intent intent = new Intent(getApplicationContext(), PlayExerciseActivity.class);
+					if(isEmpty ==0){
+						for (int i=0; i<vList.size();i++){
+							order=i;
+							name = vList.get(i).editText_name.getText().toString();
+							num = Integer.parseInt(vList.get(i).editText_num.getText().toString());
+							repetition = Integer.parseInt(vList.get(i).editText_repetition.getText().toString());
+							weight = Integer.parseInt(vList.get(i).editText_weight.getText().toString());
+							restTime = Integer.parseInt(vList.get(i).editText_time.getText().toString());
 
-					intent.putStringArrayListExtra("name", nameList);
-					intent.putIntegerArrayListExtra("num", numList);
-					intent.putIntegerArrayListExtra("repetition", repetitionList);
-					intent.putIntegerArrayListExtra("weight", weightList);
-					intent.putIntegerArrayListExtra("restTime", restTimeList);
+							Log.d("kk", date + "/" + time + "/" + order + "/" + name + "/" + num + "/" + repetition + "/" + weight + "/" + restTime);
 
+							nameList.add(name);
+							numList.add(num);
+							repetitionList.add(repetition);
+							weightList.add(weight);
+							restTimeList.add(restTime);
 
-					startActivity(intent);
+							db.execSQL("INSERT INTO RECORD values('" + date + "','" + time + "', " + order + ",'" + name + "', " + num + ", " + repetition + ", " + weight + ");");
+						}
+
+						Toast.makeText(UserExerciseActivity.this, "추가완료", Toast.LENGTH_SHORT).show();
+						Intent intent = new Intent(getApplicationContext(), PlayExerciseActivity.class);
+
+						intent.putStringArrayListExtra("name", nameList);
+						intent.putIntegerArrayListExtra("num", numList);
+						intent.putIntegerArrayListExtra("repetition", repetitionList);
+						intent.putIntegerArrayListExtra("weight", weightList);
+						intent.putIntegerArrayListExtra("restTime", restTimeList);
+
+						startActivity(intent);
+					}else{
+						Toast.makeText(UserExerciseActivity.this, "빈칸을 모두 입력해주세요.", Toast.LENGTH_SHORT).show();
+					}
 				}else{
-					Toast.makeText(UserExerciseActivity.this, "빈칸을 모두 입력해주세요.", Toast.LENGTH_SHORT).show();
+					Toast.makeText(UserExerciseActivity.this, "운동을 추가해주세요.", Toast.LENGTH_SHORT).show();
 				}
+
 
 			}
 		});
+
 		createLineBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {

@@ -2,20 +2,23 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 			  android:orientation="horizontal"
 			  android:layout_width="match_parent"
-			  android:layout_height="match_parent">
+			  android:layout_height="match_parent"
+	android:background="@android:color/white">
 
 	<ScrollView
 		android:layout_width="wrap_content"
 		android:layout_height="match_parent"
 		android:fadeScrollbars="false"
 		android:layout_gravity="left"
-		android:layout_weight="1">
+		android:layout_weight="1"
+		android:background="@android:color/white">
 
 		<LinearLayout
 			android:id="@+id/layoutUserExercise"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
-			android:orientation="vertical">
+			android:orientation="vertical"
+			android:background="@android:color/white">
 
 		</LinearLayout>
 	</ScrollView>
@@ -24,7 +27,8 @@
 		android:layout_height="match_parent"
 		android:orientation="vertical"
 		android:layout_gravity="right"
-		android:layout_weight="0">
+		android:layout_weight="0"
+		android:background="@android:color/white">
 
 		<Button
 			android:id="@+id/createLineBtn"

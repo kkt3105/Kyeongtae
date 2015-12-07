@@ -1,6 +1,7 @@
 package com.example.myapplication;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -9,7 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -19,8 +20,8 @@ import java.util.Calendar;
 public class RoutineExerciseActivity extends AppCompatActivity {
 	DBManager dbm;
 	SQLiteDatabase db;
-	Button pushUpRoutineBtn;
-	Button pullUpRoutineBtn;
+	ImageButton pushUpRoutineBtn;
+	ImageButton pullUpRoutineBtn;
 	Context context;
 	ListView lv;
 	ArrayAdapter<String> adapter;
@@ -35,8 +36,8 @@ public class RoutineExerciseActivity extends AppCompatActivity {
 		dbm = new DBManager(this);
 		context=this;
 
-		pushUpRoutineBtn = (Button)findViewById(R.id.pushUpRoutineBtn);
-		pullUpRoutineBtn = (Button)findViewById(R.id.pullUpRoutineBtn);
+		pushUpRoutineBtn = (ImageButton)findViewById(R.id.pushUpRoutineBtn);
+		pullUpRoutineBtn = (ImageButton)findViewById(R.id.pullUpRoutineBtn);
 		lv = (ListView)findViewById(R.id.routineListView);
 
 		lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -79,12 +80,18 @@ public class RoutineExerciseActivity extends AppCompatActivity {
 				String date = year + "" + (month + 1) + "" + day;
 				String time = hour +""+minute+""+second;
 
+				ArrayList<String> nameList = new ArrayList<>();
+				ArrayList<Integer> numList = new ArrayList<>();
+				ArrayList<Integer> repetitionList = new ArrayList<>();
+				ArrayList<Integer> weightList = new ArrayList<>();
+				ArrayList<Integer> restTimeList = new ArrayList<>();
+
 				Log.d("kk", position+"");
 				Cursor cursor;
 				cursor = db.rawQuery("SELECT * FROM ROUTINE WHERE (type = " + type + " and week = " + (position + 1) + ");", null);
 				String contents="";
 				String name="";
-				int type=0, week=0, exerorder=0, repetition=0;
+				int type=0, week=0, exerorder=0, repetition=0, num=1, weight=0, restTime=1;
 
 				if (cursor.moveToFirst()) {
 					do {
@@ -98,13 +105,27 @@ public class RoutineExerciseActivity extends AppCompatActivity {
 						}else if(type == 1){
 							name="Push up";
 						}
+						nameList.add(name);
+						numList.add(num);
+						repetitionList.add(repetition);
+						weightList.add(weight);
+						restTimeList.add(restTime);
 
-						db.execSQL("INSERT INTO RECORD values('" + date + "','" + time + "', " + exerorder + ",'" + name + "', " + 1 + ", " + repetition + ", " + 0 + ");");
+						db.execSQL("INSERT INTO RECORD values('" + date + "','" + time + "', " + exerorder + ",'" + name + "', " + num + ", " + repetition + ", " + 0 + ");");
 
 					} while (cursor.moveToNext());
 				}
 
-				Toast.makeText(RoutineExerciseActivity.this, "추가하였습니다.", Toast.LENGTH_SHORT).show();
+				Toast.makeText(RoutineExerciseActivity.this, "추가완료", Toast.LENGTH_SHORT).show();
+				Intent intent = new Intent(getApplicationContext(), PlayExerciseActivity.class);
+
+				intent.putStringArrayListExtra("name", nameList);
+				intent.putIntegerArrayListExtra("num", numList);
+				intent.putIntegerArrayListExtra("repetition", repetitionList);
+				intent.putIntegerArrayListExtra("weight", weightList);
+				intent.putIntegerArrayListExtra("restTime", restTimeList);
+
+				startActivity(intent);
 
 				return true;
 			}
@@ -114,30 +135,7 @@ public class RoutineExerciseActivity extends AppCompatActivity {
 			@Override
 			public void onClick(View v) {
 				type = 1;
-				ArrayList<String> list = new ArrayList<String>();
-				adapter = new ArrayAdapter<String>(RoutineExerciseActivity.this, android.R.layout.simple_expandable_list_item_1, list);
-				adapter.clear();
-				db = dbm.getReadableDatabase();
-
-				Cursor cursor;
-				cursor = db.rawQuery("SELECT max(week) FROM ROUTINE WHERE ( type ="+type+");", null);
-				listnum = 0;
-
-				if (cursor.moveToFirst()) {
-					do {
-						listnum = cursor.getInt(0);
-					} while (cursor.moveToNext());
-				}
-				for (int i = 1; i <= listnum; i++) {
-					list.add(i+"일차");
-				}
-
-				adapter = new ArrayAdapter<String>(RoutineExerciseActivity.this, android.R.layout.simple_expandable_list_item_1, list);
-
-				lv.setAdapter(adapter);
-
-				cursor.close();
-				db.close();
+				updateList(type);
 			}
 		});
 
@@ -145,31 +143,39 @@ public class RoutineExerciseActivity extends AppCompatActivity {
 			@Override
 			public void onClick(View v) {
 				type = 0;
-				ArrayList<String> list = new ArrayList<String>();
-				adapter = new ArrayAdapter<String>(RoutineExerciseActivity.this, android.R.layout.simple_expandable_list_item_1, list);
-				adapter.clear();
-				db = dbm.getReadableDatabase();
-
-				Cursor cursor;
-				cursor = db.rawQuery("SELECT max(week) FROM ROUTINE WHERE ( type ="+type+");", null);
-				listnum = 0;
-
-				if (cursor.moveToFirst()) {
-					do {
-						listnum = cursor.getInt(0);
-					} while (cursor.moveToNext());
-				}
-				for (int i = 1; i <= listnum; i++) {
-					list.add(i+"주차");
-				}
-
-				adapter = new ArrayAdapter<String>(RoutineExerciseActivity.this, android.R.layout.simple_expandable_list_item_1, list);
-
-				lv.setAdapter(adapter);
-
-				cursor.close();
-				db.close();
+				updateList(type);
 			}
 		});
+
 	}
+	public void updateList(int type){
+		ArrayList<String> list = new ArrayList<String>();
+		adapter = new ArrayAdapter<String>(RoutineExerciseActivity.this, android.R.layout.simple_expandable_list_item_1, list);
+		adapter.clear();
+		db = dbm.getReadableDatabase();
+
+		Cursor cursor;
+		cursor = db.rawQuery("SELECT max(week) FROM ROUTINE WHERE ( type ="+type+");", null);
+		listnum = 0;
+
+		if (cursor.moveToFirst()) {
+			do {
+				listnum = cursor.getInt(0);
+			} while (cursor.moveToNext());
+		}
+		for (int i = 1; i <= listnum; i++) {
+			if(type==1){
+				list.add(i+"일차");
+			}else if(type==0){
+				list.add(i+"주차");
+			}
+		}
+
+		adapter = new ArrayAdapter<String>(RoutineExerciseActivity.this, android.R.layout.simple_expandable_list_item_1, list);
+		lv.setAdapter(adapter);
+
+		cursor.close();
+		db.close();
+	}
+
 }
