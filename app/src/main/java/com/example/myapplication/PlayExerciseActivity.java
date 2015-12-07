@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
 import android.os.Vibrator;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -185,7 +186,7 @@ public class PlayExerciseActivity extends AppCompatActivity {
 			final View rootView = inflater.inflate(R.layout.fragment3, container, false);
 
 			ImageButton anotherExerciseButton = (ImageButton)rootView.findViewById(R.id.anotherExerciseBtn);
-			ImageButton cameraButton = (ImageButton)rootView.findViewById(R.id.cameraBtn);
+			final ImageButton cameraButton = (ImageButton)rootView.findViewById(R.id.cameraBtn);
 			ImageButton exerciseEndButton = (ImageButton)rootView.findViewById(R.id.ExerciseEndBtn);
 
 			anotherExerciseButton.setOnClickListener(new View.OnClickListener() {
@@ -196,6 +197,23 @@ public class PlayExerciseActivity extends AppCompatActivity {
 				}
 			});
 
+			cameraButton.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					Intent cameraIntent = new Intent();
+					cameraIntent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
+					startActivity(cameraIntent);
+				}
+			});
+			exerciseEndButton.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+
+					Intent allStopIntent = new Intent(context, MainActivity.class);
+					allStopIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+					startActivity(allStopIntent);
+				}
+			});
 			return rootView;
 		}
 	}

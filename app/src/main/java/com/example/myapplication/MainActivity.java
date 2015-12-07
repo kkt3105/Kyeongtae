@@ -2,19 +2,22 @@ package com.example.myapplication;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.View;
 
 public class MainActivity extends AppCompatActivity {
-
+	String imgPath;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
 		startActivity(new Intent(this, LoadingActivity.class));
+		setContentView(R.layout.activity_main);
 	}
 
 	public void onClick_main_1(View view) {
@@ -26,8 +29,12 @@ public class MainActivity extends AppCompatActivity {
 		startActivity(mainBtn2Intent);
 	}
 	public void onClick_main_3(View view) {
-		Intent mainBtn3Intent = new Intent(getApplicationContext(), SocialActivity.class);
-		startActivity(mainBtn3Intent);
+		Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+		startActivityForResult(intent, 1);
+
+//		Intent mainBtn3Intent = new Intent(getApplicationContext(), SocialActivity.class);
+//		mainBtn3Intent.putExtra("imgPath", imgPath);
+//		startActivity(mainBtn3Intent);
 	}
 
 	@Override
@@ -48,6 +55,29 @@ public class MainActivity extends AppCompatActivity {
 		}
 
 		return super.onKeyDown(keyCode, event);
+	}
+
+	@Override
+	public void onActivityResult(int req, int res, Intent data){
+		super.onActivityResult(req, res, data);
+		if(req == 1 && res == RESULT_OK && null != data){
+			Uri selectedImage = data.getData();
+			String[] filePathColumn = {MediaStore.Images.Media.DATA};
+			Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
+			cursor.moveToFirst();
+
+			int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+			imgPath = cursor.getString(columnIndex);
+			//Log.d("cccc", imgPath);
+			//Bitmap img = BitmapFactory.decodeFile(imgPath);
+
+			cursor.close();
+
+		}
+		//Log.d("dddd", "5");
+		Intent mainBtn3Intent = new Intent(getApplicationContext(), SocialActivity.class);
+		mainBtn3Intent.putExtra("imgPath", imgPath);
+		startActivity(mainBtn3Intent);
 	}
 }
 
