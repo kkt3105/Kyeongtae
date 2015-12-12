@@ -32,9 +32,6 @@ public class MainActivity extends AppCompatActivity {
 		Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 		startActivityForResult(intent, 1);
 
-//		Intent mainBtn3Intent = new Intent(getApplicationContext(), SocialActivity.class);
-//		mainBtn3Intent.putExtra("imgPath", imgPath);
-//		startActivity(mainBtn3Intent);
 	}
 
 	@Override
@@ -68,13 +65,10 @@ public class MainActivity extends AppCompatActivity {
 
 			int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
 			imgPath = cursor.getString(columnIndex);
-			//Log.d("cccc", imgPath);
-			//Bitmap img = BitmapFactory.decodeFile(imgPath);
 
 			cursor.close();
 
 		}
-		//Log.d("dddd", "5");
 		Intent mainBtn3Intent = new Intent(getApplicationContext(), SocialActivity.class);
 		mainBtn3Intent.putExtra("imgPath", imgPath);
 		startActivity(mainBtn3Intent);

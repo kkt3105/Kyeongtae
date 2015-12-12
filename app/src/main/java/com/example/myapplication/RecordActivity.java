@@ -98,7 +98,6 @@ public class RecordActivity extends AppCompatActivity {
 
 				Exercise exer = new Exercise(date, time, order, name, num, repetition, weight);
 				list.add(exer);
-				Log.d("kk", time);
 
 			} while (cursor.moveToNext());
 		}

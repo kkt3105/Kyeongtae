@@ -45,7 +45,6 @@ public class RoutineExerciseActivity extends AppCompatActivity {
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				db = dbm.getReadableDatabase();
 
-				Log.d("kk", position+"");
 				Cursor cursor;
 				cursor = db.rawQuery("SELECT * FROM ROUTINE WHERE (type = " + type +" and week = "+ (position+1) + ");", null);
 				String contents="";

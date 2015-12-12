@@ -4,7 +4,4 @@
 			  android:layout_width="match_parent"
 			  android:layout_height="match_parent"
 			  android:id="@+id/container">
-	<!-- 화면 전환(Frame layout)을 사용할 지, 아니면 activity를 사용할 지-->
-	<!--
-	-->
 </FrameLayout>

@@ -41,6 +41,8 @@ public class PlayExerciseActivity extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_play_exercise);
 		context = this;
+
+
 		Intent intent = getIntent();
 		nameList = intent.getStringArrayListExtra("name");
 		numList = intent.getIntegerArrayListExtra("num");
@@ -117,8 +119,6 @@ public class PlayExerciseActivity extends AppCompatActivity {
 
 			final View rootView = inflater.inflate(R.layout.fragment2, container, false);
 
-			int delay = restTime; // delay for 5 sec.
-			int period = 1000; // repeat every sec.
 			run = true;
 
 			restTime = restTimeList.get(nameIndex) * 60;
@@ -132,7 +132,7 @@ public class PlayExerciseActivity extends AppCompatActivity {
 					run = false;
 				}
 			});
-			final android.os.Handler handler = new android.os.Handler(){
+			 final android.os.Handler handler = new android.os.Handler(){
 				@Override
 				public void handleMessage(Message msg){
 					tvRestTime.setText(--restTime + "");
@@ -154,7 +154,6 @@ public class PlayExerciseActivity extends AppCompatActivity {
 					if(run){
 						Message msg = handler.obtainMessage();
 						handler.sendMessage(msg);
-						Log.d("ii",";");
 					}else {
 						timer.cancel();
 						timer.purge();
@@ -162,11 +161,9 @@ public class PlayExerciseActivity extends AppCompatActivity {
 						if( ++temp >= numList.get(nameIndex)){
 							temp=0;
 							nameIndex++;
-							Log.d("Dbug", "set end");
 						}
 
 						if(nameIndex >= nameList.size()){
-							Log.d("Dbug-list", "ALL EXERCISE FINISH!!");
 							getActivity().getFragmentManager().beginTransaction().replace(R.id.container, fragment3).commit();
 
 						}else{

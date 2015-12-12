@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -82,8 +81,6 @@ public class UserExerciseActivity extends AppCompatActivity {
 							repetition = Integer.parseInt(vList.get(i).editText_repetition.getText().toString());
 							weight = Integer.parseInt(vList.get(i).editText_weight.getText().toString());
 							restTime = Integer.parseInt(vList.get(i).editText_time.getText().toString());
-
-							Log.d("kk", date + "/" + time + "/" + order + "/" + name + "/" + num + "/" + repetition + "/" + weight + "/" + restTime);
 
 							nameList.add(name);
 							numList.add(num);

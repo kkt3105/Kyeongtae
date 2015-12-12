@@ -3,11 +3,9 @@ package com.example.myapplication;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 public class DBManager extends SQLiteOpenHelper {
 
-	private static String DB_PATH="";
 	private static String DB_NAME = "AppDB";
 
 	public DBManager(Context context){
@@ -16,14 +14,15 @@ public class DBManager extends SQLiteOpenHelper {
 
 	@Override
 	public void onCreate(SQLiteDatabase db){
-		Log.d("kkk", "asdsadsad");
+
 		String createRecord = "CREATE TABLE RECORD (date char(8), time char(6), exerorder int, name varchar(30), num int, repetition int, weight int, PRIMARY KEY(date, time, exerorder));";
 		db.execSQL(createRecord);
 
 		String createRoutine = "CREATE TABLE ROUTINE (type int, week int, exerorder int, repetition int, PRIMARY KEY(type, week, exerorder));";
 		db.execSQL(createRoutine);
 
-		// pull up routine sample 10 weeks
+		// It will be replaced with official database.
+		// Pull up Routine Sample 10 weeks
 		db.execSQL("INSERT INTO ROUTINE values(0,1,0,6);");
 		db.execSQL("INSERT INTO ROUTINE values(0,1,1,5);");
 		db.execSQL("INSERT INTO ROUTINE values(0,1,2,5);");
@@ -84,7 +83,7 @@ public class DBManager extends SQLiteOpenHelper {
 		db.execSQL("INSERT INTO ROUTINE values(0,10,3,7);");
 		db.execSQL("INSERT INTO ROUTINE values(0,10,4,7);");
 
-		// push up routine sample 7 days
+		// Push up Routine Sample 7 days
 		db.execSQL("INSERT INTO ROUTINE values(1,1,0,2);");
 		db.execSQL("INSERT INTO ROUTINE values(1,1,1,2);");
 		db.execSQL("INSERT INTO ROUTINE values(1,1,2,4);");
